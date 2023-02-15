@@ -1,0 +1,5 @@
+	while (i < input->n_ph)
+	{
+		pthread_mutex_init()
+		i++;
+	}
