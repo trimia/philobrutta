@@ -6,13 +6,13 @@
 #    By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 23:40:00 by mmariani          #+#    #+#              #
-#    Updated: 2023/02/14 23:45:39 by mmariani         ###   ########.fr        #
+#    Updated: 2023/02/15 04:28:43 by mmariani         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philosopher
 
-SRCS = philosopher.c mutex.c action.c mutex.c routine.c utils.c
+SRCS = philosopher.c mutex.c action.c routine.c utils.c monitor.c check.c
 
 OBJS = $(SRCS:.c=.o)
 

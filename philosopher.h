@@ -6,7 +6,7 @@
 /*   By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/15 00:54:15 by mmariani          #+#    #+#             */
-/*   Updated: 2023/02/15 01:00:16 by mmariani         ###   ########.fr       */
+/*   Updated: 2023/02/15 04:16:15 by mmariani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct s_philo
 	int				id;
 	int				n_eat;
 	int				end;
-	uint64_t		strv;
+	uint64_t		t_starteating;
 	pthread_t		thread;
 	pthread_mutex_t	*left;
 	pthread_mutex_t	*right;
@@ -41,7 +41,7 @@ typedef struct s_input
 	uint64_t		tt_sleep;
 	int				n_to_eat;
 	int				some_die;
-	int				stillrunning;
+	int				havealleat;
 	uint64_t		start_time;
 	t_philo			*philo;
 	pthread_mutex_t	*forks;
@@ -57,5 +57,10 @@ void		ft_my_sleep(uint64_t time);
 void		ft_philo_msg(t_philo *ph, int id, char *str);
 int			ft_initmutex(t_input *input);
 uint64_t	ft_get_time(void);
+void		*ft_routine(void *phil);
+void		ft_monitor(t_input *input, int i, long long tmp);
+int			ft_take_forks(t_philo *philo);
+void		ft_action(t_philo *philo);
+int			ft_check_mutex(int flag, t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 23:42:38 by mmariani          #+#    #+#             */
-/*   Updated: 2023/02/15 01:01:05 by mmariani         ###   ########.fr       */
+/*   Updated: 2023/02/15 04:13:23 by mmariani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	init_input(int argc, char **argv, t_input *input)
 	input->tt_die = ft_atoi(argv[2]);
 	input->tt_eat = ft_atoi(argv[3]);
 	input->tt_sleep = ft_atoi(argv[4]);
-	input->stillrunning = 1;
+	input->havealleat = 1;
 	input->some_die = 1;
 	if (argc == 6)
 		input->n_to_eat = ft_atoi(argv[5]);
@@ -32,7 +32,7 @@ static int	init_input(int argc, char **argv, t_input *input)
 	return (0);
 }
 
-static int	init_philo(t_input *input)
+static void	init_philo(t_input *input)
 {
 	int	i;
 
@@ -42,7 +42,7 @@ static int	init_philo(t_input *input)
 		input->philo[i].id = i + 1;
 		input->philo[i].n_eat = 0;
 		input->philo[i].end = 0;
-		input->philo[i].strv = 0;
+		input->philo[i].t_starteating = 0;
 		input->philo[i].input = input;
 		pthread_mutex_init(&input->philo[i].strv_mutex, NULL);
 		input->philo[i].left = &input->forks[i];
@@ -51,6 +51,23 @@ static int	init_philo(t_input *input)
 			input->philo[i].right = &input->forks[0];
 		i++;
 	}
+}
+
+static void	clean(t_input *input)
+{
+	int		i;
+	t_philo	*philo;
+
+	philo = input->philo;
+	i = -1;
+	while (++i < input->n_ph)
+		pthread_mutex_destroy(&input->forks[i]);
+	pthread_mutex_destroy(&input->lock);
+	pthread_mutex_destroy(&input->die_mutex);
+	pthread_mutex_destroy(&input->eat_mutex);
+	pthread_mutex_destroy(&input->philo_time);
+	free(philo);
+	free(input->forks);
 }
 
 static void	start(t_input *input)
@@ -62,11 +79,11 @@ static void	start(t_input *input)
 	while (++i < input->n_ph)
 		pthread_create(&input->philo[i].thread, NULL,
 			ft_routine, &input->philo[i]);
-	ft_monitor(input);
+	ft_monitor(input, -1, 0);
 	i = -1;
 	while (++i < input->n_ph)
 		pthread_join(input->philo[i].thread, NULL);
-	ft_clean(input);
+	clean(input);
 }
 
 int	main(int argc, char **argv)

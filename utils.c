@@ -6,7 +6,7 @@
 /*   By: mmariani <mmariani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/14 23:46:21 by mmariani          #+#    #+#             */
-/*   Updated: 2023/02/15 00:41:43 by mmariani         ###   ########.fr       */
+/*   Updated: 2023/02/15 02:09:10 by mmariani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,16 @@ void	ft_my_sleep(uint64_t time)
 {
 	uint64_t	tmp;
 
-	tmp = start_timer();
+	tmp = ft_get_time();
 	usleep(time * 1000 - 20000);
-	while (start_timer() < tmp + time)
+	while (ft_get_time() < tmp + time)
 		continue ;
 }
 
 void	ft_philo_msg(t_philo *ph, int id, char *str)
 {
 	pthread_mutex_lock(&ph->input->lock);
-	printf("%llu", start_timer() - ph->input->start_time);
+	printf("%llu", ft_get_time() - ph->input->start_time);
 	printf(" %d %s\n", id, str);
 	pthread_mutex_unlock(&ph->input->lock);
 }
